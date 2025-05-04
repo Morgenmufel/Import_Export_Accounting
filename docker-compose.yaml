@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: 'postgres:13'
+    container_name: 'Import_Export_accounting'
+    ports:
+      - 5433:5432
+    environment:
+      - 'POSTGRES_USER=renya'
+      - 'POSTGRES_DB=accounting'
+      - 'POSTGRES_PASSWORD=strongest'
