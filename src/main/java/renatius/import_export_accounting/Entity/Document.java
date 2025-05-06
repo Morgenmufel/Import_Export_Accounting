@@ -19,13 +19,21 @@ public class Document {
     @GeneratedValue
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "transaction_id")
-    private Transaction transaction;
-
+    @Lob
+    @Column(columnDefinition = "BLOB")
+    private byte[] fileAsArrayOfBytes;
 
     private String filePath;
+
     private String docType;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    @ManyToOne
+    private Partner partner;
+
+    @OneToOne(mappedBy = "document")
+    private Request request;
+
 }

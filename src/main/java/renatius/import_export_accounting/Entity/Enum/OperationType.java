@@ -1,6 +1,7 @@
 package renatius.import_export_accounting.Entity.Enum;
 
-public enum TransactionType {
+public enum OperationType {
     IMPORT,
-    EXPORT;
+    EXPORT,
+    BOTH
 }

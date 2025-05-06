@@ -3,7 +3,9 @@ package renatius.import_export_accounting.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import renatius.import_export_accounting.Entity.Enum.PartnerRole;
+
+import java.util.List;
+
 
 @Entity
 @Table
@@ -13,13 +15,19 @@ import renatius.import_export_accounting.Entity.Enum.PartnerRole;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class Partner {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
     private String country;
+
     private String contactInfo;
+
     private String taxNumber;
 
-    @Enumerated(EnumType.STRING)
-    private PartnerRole type;
+
+    @OneToMany
+    private List<Request> request;
 }
