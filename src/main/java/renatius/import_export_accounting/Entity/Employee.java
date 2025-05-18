@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class User {
+public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,6 +23,7 @@ public class User {
 
     private String passwordHash;
 
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
     private String email;

@@ -1,4 +1,3 @@
--- Создание таблицы partner
 CREATE TABLE partner (
                          id BIGSERIAL PRIMARY KEY,
                          name VARCHAR(255) NOT NULL,
@@ -8,7 +7,6 @@ CREATE TABLE partner (
                          type VARCHAR(20) NOT NULL
 );
 
--- Создание таблицы user (в кавычках, так как user - зарезервированное слово)
 CREATE TABLE "user" (
                         id SERIAL PRIMARY KEY,
                         username VARCHAR(50) NOT NULL UNIQUE,
@@ -18,7 +16,6 @@ CREATE TABLE "user" (
                         create_at TIMESTAMP
 );
 
--- Создание таблицы warehouse
 CREATE TABLE warehouse (
                            id SERIAL PRIMARY KEY,
                            name VARCHAR(100) NOT NULL,
@@ -26,7 +23,6 @@ CREATE TABLE warehouse (
                            manager VARCHAR(100)
 );
 
--- Создание таблицы document (без внешнего ключа на request)
 CREATE TABLE document (
                           id BIGSERIAL PRIMARY KEY,
                           file_as_array_of_bytes BYTEA,
@@ -36,7 +32,6 @@ CREATE TABLE document (
                           partner_id BIGINT REFERENCES partner(id)
 );
 
--- Создание таблицы request
 CREATE TABLE request (
                          id BIGSERIAL PRIMARY KEY,  -- Изменено с INT на BIGINT для согласованности
                          partner_id BIGINT NOT NULL REFERENCES partner(id),
@@ -47,12 +42,10 @@ CREATE TABLE request (
                          created_at TIMESTAMP
 );
 
--- Добавление внешнего ключа request_id в document
 ALTER TABLE document ADD COLUMN request_id BIGINT UNIQUE;
 ALTER TABLE document ADD CONSTRAINT fk_document_request
     FOREIGN KEY (request_id) REFERENCES request(id);
 
--- Создание таблицы product
 CREATE TABLE product (
                          id BIGSERIAL PRIMARY KEY,
                          name VARCHAR(100) NOT NULL,
@@ -63,7 +56,6 @@ CREATE TABLE product (
                          request_id BIGINT REFERENCES request(id)
 );
 
--- Создание таблицы warehouse_product с составным ключом
 CREATE TABLE warehouse_product (
                                    product_id BIGINT NOT NULL REFERENCES product(id),
                                    warehouse_id INTEGER NOT NULL REFERENCES warehouse(id),

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход для сотрудников | Торговая платформа</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --carbon-gray: #e0e0e0;
+            --dark-blue: #2c3e50;
+            --orange: #FF6B35;
+            --light-orange: #FF9E1B;
+            --green: #27ae60;
+            --red: #e74c3c;
+            --blue: #3498db;
+            --light-gray: #f5f5f5;
+            --white: #ffffff;
+            --text-dark: #333333;
+            --text-medium: #555555;
+            --text-light: #7f8c8d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: var(--carbon-gray);
+            color: var(--text-dark);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .employee-login-container {
+            max-width: 800px;
+            width: 100%;
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            min-height: 500px;
+        }
+
+        .login-left {
+            flex: 1;
+            background: linear-gradient(135deg, var(--dark-blue), #1a2a3a);
+            color: var(--white);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .login-left::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .employee-logo {
+            font-size: 28px;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 30px;
+        }
+
+        .employee-features {
+            list-style: none;
+            margin-top: 40px;
+        }
+
+        .employee-features li {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .login-right {
+            flex: 1;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: var(--dark-blue);
+            font-family: 'Playfair Display', serif;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .form-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--orange), var(--light-orange));
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--orange);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--orange), var(--light-orange));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--orange);
+            color: var(--orange);
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--orange);
+            color: white;
+        }
+
+        .auth-actions {
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .auth-actions .btn {
+            flex: 1 1 48%;
+        }
+        .auth-divider {
+            text-align: center;
+            margin: 20px 0;
+            color: var(--text-medium);
+            position: relative;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #ddd;
+            position: absolute;
+            top: 50%;
+            width: 45%;
+        }
+
+        .auth-divider::before {
+            left: 0;
+        }
+
+        .auth-divider::after {
+            right: 0;
+        }
+
+        .role-hint {
+            font-size: 14px;
+            color: var(--text-medium);
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .employee-login-container {
+                flex-direction: column;
+            }
+
+            .login-left {
+                padding: 30px 20px;
+            }
+
+            .login-right {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="employee-login-container">
+    <div class="login-left">
+        <div class="employee-logo">Внутренний портал</div>
+        <ul class="employee-features">
+            <li>
+                <i class="fas fa-shield-alt"></i>
+                <span>Защищенный доступ к корпоративным системам</span>
+            </li>
+            <li>
+                <i class="fas fa-chart-pie"></i>
+                <span>Аналитика и отчетность в реальном времени</span>
+            </li>
+            <li>
+                <i class="fas fa-tasks"></i>
+                <span>Управление рабочими процессами</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="login-right">
+        <h2 class="form-title">Вход для сотрудников</h2>
+        <form method="post" th:action="@{/employee/login}" th:object="${employee}" id="employeeLoginForm">
+            <div class="form-group">
+                <i class="fas fa-user-tie input-icon"></i>
+                <input type="text" th:field="*{username}" class="form-control" placeholder="Логин" required>
+            </div>
+
+            <div class="form-group">
+                <i class="fas fa-lock input-icon"></i>
+                <input type="password" th:field="*{passwordHash}" class="form-control" placeholder="Пароль" required id="password">
+                <i class="fas fa-eye password-toggle" onclick="togglePassword()"></i>
+            </div>
+
+            <div class="auth-actions">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Войти
+                </button>
+
+                <a th:href="@{/employee/register}" class="btn btn-secondary">
+                    <i class="fas fa-user-plus"></i> Зарегистрироваться
+                </a>
+            </div>
+
+            <div class="role-hint">
+                Доступные роли: Администратор, Бухгалтер, Менеджер склада<br>
+                <small>Регистрация доступна только по корпоративной почте</small>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('employeeLoginForm');
+
+        form.addEventListener('submit', function(e) {
+            const username = this.querySelector('input[type="text"]').value;
+            const password = this.querySelector('input[type="password"]').value;
+
+            if(username && password) {
+                alert('Добро пожаловать, ' + username + '!');
+                // window.location.href = '/employee/dashboard';
+            }
+        });
+    });
+
+    function togglePassword() {
+        const passwordField = document.getElementById('password');
+        const toggleIcon = document.querySelector('.password-toggle');
+
+        if(passwordField.type === 'password') {
+            passwordField.type = 'text';
+            toggleIcon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            passwordField.type = 'password';
+            toggleIcon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    }
+</script>
+</body>
+</html>

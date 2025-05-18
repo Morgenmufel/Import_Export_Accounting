@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация партнера | Торговая платформа</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --carbon-gray: #e0e0e0;
+            --dark-blue: #2c3e50;
+            --orange: #FF6B35;
+            --light-orange: #FF9E1B;
+            --green: #27ae60;
+            --red: #e74c3c;
+            --blue: #3498db;
+            --light-gray: #f5f5f5;
+            --white: #ffffff;
+            --text-dark: #333333;
+            --text-medium: #555555;
+            --text-light: #7f8c8d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: var(--carbon-gray);
+            color: var(--text-dark);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .register-container {
+            max-width: 1000px;
+            width: 100%;
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            min-height: 600px;
+        }
+
+        .register-left {
+            flex: 1;
+            background: linear-gradient(135deg, var(--dark-blue), #1a2a3a);
+            color: var(--white);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .register-left::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .register-left::after {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            left: -80px;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .register-logo {
+            font-size: 28px;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .register-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-family: 'Playfair Display', serif;
+            position: relative;
+            z-index: 1;
+        }
+
+        .register-subtitle {
+            font-size: 16px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .register-features {
+            list-style: none;
+            margin-top: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .register-features li {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .register-features i {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .register-right {
+            flex: 1;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: var(--dark-blue);
+            font-family: 'Playfair Display', serif;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .form-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--orange), var(--light-orange));
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-medium);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--orange);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+        }
+
+        .form-hint {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 5px;
+            display: block;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--orange), var(--light-orange));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--text-medium);
+        }
+
+        .login-link a {
+            color: var(--orange);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .partner-type {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .partner-type-option {
+            flex: 1;
+            text-align: center;
+        }
+
+        .partner-type-option input[type="radio"] {
+            display: none;
+        }
+
+        .partner-type-option label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            height: 100px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            min-width: 130px;
+        }
+
+        .partner-type-option label i {
+            font-size: 24px;
+            margin-bottom: 5px;
+            color: #FF5722;
+        }
+
+        .partner-type-option input[type="radio"]:checked + label {
+            border-color: #FF5722;
+            background-color: #FFF3ED;
+        }
+
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.2s; }
+        .form-group:nth-child(3) { animation-delay: 0.3s; }
+        .form-group:nth-child(4) { animation-delay: 0.4s; }
+        .form-group:nth-child(5) { animation-delay: 0.5s; }
+        .form-group:nth-child(6) { animation-delay: 0.6s; }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .register-container {
+                flex-direction: column;
+            }
+
+            .register-left {
+                padding: 30px 20px;
+            }
+
+            .register-right {
+                padding: 30px 20px;
+            }
+
+            .partner-type {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="register-container">
+    <div class="register-left">
+        <div class="register-logo">Торговая платформа</div>
+        <h1 class="register-title">Станьте нашим партнером</h1>
+        <p class="register-subtitle">Присоединяйтесь к глобальной торговой сети и расширяйте свой бизнес</p>
+
+        <ul class="register-features">
+            <li>
+                <i class="fas fa-globe"></i>
+                <span>Доступ к международным рынкам</span>
+            </li>
+            <li>
+                <i class="fas fa-chart-line"></i>
+                <span>Рост продаж и прибыли</span>
+            </li>
+            <li>
+                <i class="fas fa-handshake"></i>
+                <span>Надежные партнерские отношения</span>
+            </li>
+            <li>
+                <i class="fas fa-headset"></i>
+                <span>Персональная поддержка 24/7</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="register-right">
+        <h2 class="form-title">Регистрация партнера</h2>
+
+        <form method="post" th:action="@{/partner/registerPartner}" th:object="${partner}" id="partnerRegisterForm">
+            <div class="form-group">
+                <label for="nameOfCompany" class="form-label">Название компании</label>
+                <input type="text" id="nameOfCompany" th:field="*{nameOfCompany}" placeholder="Введите название компании" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="name" class="form-label">ФИО контактного лица</label>
+                <input type="text" id="name" th:field="*{name}" placeholder="ФИО" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" th:field="*{email}" placeholder="Введите ваш email" class="form-control" required>
+                <span class="form-hint">Будет использоваться для входа в систему</span>
+            </div>
+
+            <div class="form-group">
+                <label for="contactInfo" class="form-label">Телефон</label>
+                <input type="tel" id="contactInfo" th:field="*{contactInfo}" placeholder="Введите ваш номер телефона" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="country" class="form-label">Страна</label>
+                <input type="text" id="country" th:field="*{country}" placeholder="Введите вашу страну" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="taxNumber" class="form-label">УНП / ИНН</label>
+                <input type="text" id="taxNumber" th:field="*{taxNumber}" placeholder="Введите номер для идентификации" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">Пароль</label>
+                <input type="password" id="password" th:field="*{passwordHash}" placeholder="Введите ваш пароль" class="form-control" required minlength="8">
+                <span class="form-hint">Минимум 8 символов</span>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword" class="form-label">Подтверждение пароля</label>
+                <input type="password" id="confirmPassword" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-user-plus"></i> Зарегистрироваться
+                </button>
+            </div>
+
+            <div class="login-link">
+                Уже есть аккаунт? <a th:href="@{/partner/login}">Войти</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('partnerRegisterForm');
+
+        form.addEventListener('submit', function(e) {
+
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (password !== confirmPassword) {
+                alert('Пароли не совпадают');
+                e.preventDefault();
+                return;
+            }
+
+        });
+    });
+</script>
+</body>
+</html>

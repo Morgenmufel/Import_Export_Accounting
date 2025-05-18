@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация сотрудника | Корпоративный портал</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --carbon-gray: #e0e0e0;
+            --dark-blue: #2c3e50;
+            --orange: #FF6B35;
+            --light-orange: #FF9E1B;
+            --green: #27ae60;
+            --red: #e74c3c;
+            --blue: #3498db;
+            --light-gray: #f5f5f5;
+            --white: #ffffff;
+            --text-dark: #333333;
+            --text-medium: #555555;
+            --text-light: #7f8c8d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: var(--carbon-gray);
+            color: var(--text-dark);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .registration-container {
+            max-width: 1000px;
+            width: 100%;
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            min-height: 600px;
+        }
+
+        .registration-left {
+            flex: 1;
+            background: linear-gradient(135deg, var(--dark-blue), #1a2a3a);
+            color: var(--white);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .registration-left::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .registration-logo {
+            font-size: 28px;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 30px;
+        }
+
+        .registration-features li {
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 16px;
+        }
+
+        .registration-right {
+            flex: 1;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: var(--dark-blue);
+            font-family: 'Playfair Display', serif;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .form-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--orange), var(--light-orange));
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 18px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--orange);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255,107,53,0.1);
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .select-wrapper {
+            position: relative;
+        }
+
+        .select-wrapper::after {
+            content: '\f078';
+            font-family: 'Font Awesome 5 Free';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--text-light);
+        }
+
+        select.form-control {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            padding: 12px 45px 12px 45px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            transition: all 0.3s ease;
+        }
+
+        .btn {
+            padding: 14px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: var(--orange);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 5px 15px rgba(255,107,53,0.3);
+        }
+
+        .password-rules {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 5px;
+            padding-left: 5px;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .login-link a {
+            color: var(--orange);
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .login-link a:hover {
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .registration-container {
+                flex-direction: column;
+                min-height: auto;
+            }
+
+            .registration-left {
+                padding: 30px 20px;
+            }
+
+            .registration-right {
+                padding: 30px 20px;
+            }
+
+            .form-title {
+                font-size: 22px;
+            }
+
+            .registration-features li {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="registration-container">
+        <div class="registration-left">
+            <div class="registration-logo">Корпоративный портал</div>
+            <ul class="registration-features">
+                <li>
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Защищенная регистрация сотрудников</span>
+                </li>
+                <li>
+                    <i class="fas fa-user-lock"></i>
+                    <span>Доступ только для сотрудников компании</span>
+                </li>
+                <li>
+                    <i class="fas fa-id-card"></i>
+                    <span>Используйте корпоративную почту</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="registration-right">
+            <h2 class="form-title">Регистрация сотрудника</h2>
+            <form method="post" th:action="@{/employee/registerEmployee}"
+                  th:object="${employee}" id="registrationForm">
+                <div class="form-group">
+                    <i class="fas fa-user-tie input-icon"></i>
+                    <input type="text" 
+                           class="form-control" 
+                           placeholder="Логин"
+                           id="username"
+                           th:field="*{username}"
+                           required
+                           pattern="[A-Za-z0-9]{5,20}"
+                           title="Латиница и цифры (5-20 символов)">
+                </div>
+
+                <div class="form-group">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" 
+                           class="form-control" 
+                           placeholder="Корпоративная почта"
+                           id="email"
+                           th:field="*{email}"
+                           required
+                           pattern=".+@gmail\.com$"
+                           title="Только корпоративные email-адреса">
+                </div>
+
+                <div class="form-group">
+                    <div class="password-container">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" 
+                               class="form-control" 
+                               placeholder="Пароль"
+                               id="password"
+                               th:field="*{passwordHash}"
+                               required
+                               minlength="8">
+<!--                               pattern="(?=.*\d)(?=.*[A-Z]).{8,}"-->
+
+                        <i class="fas fa-eye password-toggle" onclick="togglePassword()"></i>
+                    </div>
+                    <div class="password-rules">
+                        Требования: 8+ символов, 1 заглавная буква и цифра
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <i class="fas fa-user-tag input-icon"></i>
+                    <div class="select-wrapper">
+                        <select class="form-control" id="role" th:field="*{role}" required>
+                            <option value="" disabled th:selected="*{role}">Выберите роль</option>
+                            <option th:value="${T(renatius.import_export_accounting.Entity.Enum.UserRole).ROLE_ADMIN}">Администратор</option>
+                            <option th:value="${T(renatius.import_export_accounting.Entity.Enum.UserRole).ROLE_ACCOUNTANT}">Бухгалтер</option>
+                            <option th:value="${T(renatius.import_export_accounting.Entity.Enum.UserRole).ROLE_WAREHOUSE_MANAGER}">Менеджер склада</option>
+                            <option th:value="${T(renatius.import_export_accounting.Entity.Enum.UserRole).ROLE_ECONOMY_MANAGER}">ВЭД</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
+                    <button class="btn btn-primary" style="padding: 12px 24px;">
+                        <i class="fas fa-user-plus"></i> Подтвердить регистрацию
+                    </button>
+                    <div class="login-link" style="margin-top: 12px;">
+                        Уже есть аккаунт? <a th:href="@{/employee/login}">Войти в систему</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword() {
+            const passwordField = document.getElementById('password');
+            const toggleIcon = document.querySelector('.password-toggle');
+            
+            if(passwordField.type === 'password') {
+                passwordField.type = 'text';
+                toggleIcon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                toggleIcon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('registrationForm');
+            
+            form.addEventListener('submit', (e) => {
+                
+                // const userData = {
+                //     username: document.getElementById('username').value,
+                //     email: document.getElementById('email').value,
+                //     password: document.getElementById('password').value,
+                //     role: document.getElementById('role').value
+                // };
+
+                // if(!userData.email.endsWith('@gmail.com') || !userData.email.endsWith('@yandex.ru')) {
+                //     alert('Используйте email!');
+                //     return;
+                // }
+
+                // console.log('Данные для регистрации:', userData);
+                // alert('Регистрация успешна! Проверьте почту для активации.');
+                // form.reset();
+            });
+        });
+    </script>
+</body>
+</html>

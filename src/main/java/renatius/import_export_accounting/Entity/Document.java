@@ -20,7 +20,7 @@ public class Document {
     private Long id;
 
     @Lob
-    @Column(columnDefinition = "BLOB")
+    @Column(columnDefinition = "BYTEA")
     private byte[] fileAsArrayOfBytes;
 
     private String filePath;
