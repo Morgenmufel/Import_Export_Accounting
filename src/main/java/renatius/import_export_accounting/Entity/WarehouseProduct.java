@@ -25,5 +25,6 @@ public class WarehouseProduct {
     private Warehouse warehouse;
 
     private int quantity;
+
     private LocalDateTime updatedAt;
 }
