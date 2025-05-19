@@ -15,5 +15,5 @@ public interface WarehouseRepository extends JpaRepository<Warehouse, Long> {
 
     List<Warehouse> findAll();
 
-
+    Optional<Warehouse> findByAddress(String address);
 }

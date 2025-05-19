@@ -7,8 +7,10 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
 
 @Configuration
 @EnableWebSecurity
@@ -23,12 +25,11 @@ public class SecurityConfig {
     @Order(1)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
                 .securityMatcher("/employee/**")
                 .authorizeHttpRequests(auth -> auth
                         //TODO допилить все маппинги, logout
                         .requestMatchers("/employee/login", "/employee/register", "/employee/registerEmployee").permitAll()
-                        .requestMatchers("/employee/home").hasAuthority("ROLE_WAREHOUSE_MANAGER")
+                        .requestMatchers("/employee/warehouse/home", "/employee/warehouse/addPage", "/employee/warehouse/add", "/employee/profile", "/employee/warehouse/**").hasAuthority("ROLE_WAREHOUSE_MANAGER")
                         .requestMatchers("/employee/admin").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/employee/accountant").hasAuthority("ROLE_ACCOUNTANT")
                         .requestMatchers("/employee/warehouseManager").hasAuthority("ROLE_WAREHOUSE_MANAGER")
@@ -38,7 +39,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/employee/login")
                         .passwordParameter("passwordHash")
-                        .defaultSuccessUrl("/employee/home", true)
+                        .defaultSuccessUrl("/employee/warehouse/home", true)
                         .loginProcessingUrl("/employee/login")
                         .failureUrl("/employee/login?error=true")
                         .permitAll()
@@ -51,7 +52,6 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain securityFilterChain2(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
                 .securityMatcher("/partner/**")
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/partner/login", "/partner/register", "/partner/registerPartner").permitAll()

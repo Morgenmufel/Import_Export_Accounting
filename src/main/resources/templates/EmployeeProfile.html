@@ -342,13 +342,13 @@
     <div class="header-content">
       <div class="header-left">
         <div class="logo">Корпоративный портал</div>
-        <a href="/warehouses" class="profile-link">
+        <a  th:href="@{/employee/warehouse/home}" class="profile-link">
           <i class="fas fa-warehouse"></i> Склады
         </a>
       </div>
       <div class="user-info">
         <div class="user-avatar" th:text="${#strings.substring(employee.username, 0, 1)}">Н</div>
-        <span th:text="${employee.username}">Никнейм</span>
+        <span th:object="${employee}"  th:text="${employee.username}">Никнейм</span>
       </div>
     </div>
   </header>
@@ -390,10 +390,10 @@
         </div>
 
         <div class="profile-actions">
-          <button class="btn btn-outline" onclick="location.href='/profile/edit'">
+          <button class="btn btn-outline" th:onclick="">
             <i class="fas fa-edit"></i> Редактировать
           </button>
-          <button class="btn btn-primary" onclick="location.href='/profile/change-password'">
+          <button class="btn btn-primary" th:onclick="">
             <i class="fas fa-key"></i> Сменить пароль
           </button>
         </div>

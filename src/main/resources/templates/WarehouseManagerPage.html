@@ -202,7 +202,7 @@
 
         .warehouses-wrapper {
             position: relative;
-            padding: 0 40px;
+            padding: 0 60px; /* Увеличил отступы для пагинации */
         }
 
         .warehouses-list {
@@ -226,6 +226,9 @@
             transition: all 0.3s ease;
             position: relative;
             border-left: 4px solid var(--orange);
+            display: flex;
+            flex-direction: column;
+            min-height: 300px; /* Фиксированная высота карточки */
         }
 
         .warehouse-card:hover {
@@ -245,6 +248,7 @@
             color: inherit;
             display: block;
             margin-bottom: 15px;
+            flex-grow: 1;
         }
 
         .warehouse-link:hover .warehouse-name {
@@ -252,7 +256,6 @@
         }
 
         .warehouse-details {
-            color: var(--text-medium);
             margin-bottom: 20px;
         }
 
@@ -270,8 +273,10 @@
 
         .warehouse-actions {
             display: flex;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 12px;
+            margin-top: auto; /* Прижимаем кнопки к низу */
+            padding-top: 15px;
+            border-top: 1px solid var(--carbon-gray);
         }
 
         .empty-state {
@@ -300,13 +305,19 @@
             width: 42px;
             height: 42px;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             z-index: 10;
+        }
+
+        .warehouse-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
         .pagination-left {
@@ -362,7 +373,8 @@
 
         @media (max-width: 768px) {
             .warehouses-wrapper {
-                padding: 0 15px;
+                position: relative;
+                padding: 0 80px;
             }
 
             .warehouses-list {
@@ -372,6 +384,7 @@
 
             .warehouse-card {
                 flex: 1 1 100%;
+                min-height: auto;
             }
 
             .warehouse-actions {
@@ -406,13 +419,13 @@
         <div class="header-content">
             <div class="header-left">
                 <div class="logo">Управление складами</div>
-                <a href="/profile" class="profile-link">
+                <a th:href="@{/employee/profile}" class="profile-link">
                     <i class="fas fa-user"></i> Профиль
                 </a>
             </div>
             <div class="user-info">
-                <div class="user-avatar" th:text="${userInitials}">НС</div>
-                <span th:text="${userNickname}">Никнейм</span>
+                <div class="user-avatar">НС</div>
+                <span th:object="${employee}" th:text="*{username}">Никнейм</span>
             </div>
         </div>
     </header>
@@ -421,57 +434,50 @@
         <div class="stats-card">
             <div class="stat-item">
                 <i class="fas fa-warehouse"></i>
-                <span th:text="${totalWarehouses} + ' складов'">5 складов</span>
-            </div>
-            <div class="stat-item">
-                <i class="fas fa-box-open"></i>
-                <span th:text="${totalCapacity} + ' единиц хранения'">1200 единиц хранения</span>
-            </div>
-            <div class="stat-item">
-                <i class="fas fa-map-marker-alt"></i>
-                <span th:text="${citiesCount} + ' городов'">3 города</span>
+                <span th:object="${totalWarehouses}" th:text="${totalWarehouses.toString()} + ' складов'">5 складов</span>
             </div>
         </div>
-        <button class="btn btn-primary btn-sm" onclick="location.href='/warehouses/add'">
-            <i class="fas fa-plus"></i> Добавить склад
+        <button th:onclick="'location.href=\'/employee/warehouse/addPage\''" class="btn btn-primary btn-sm">
+            <i  class="fas fa-plus"></i> Добавить склад
         </button>
     </div>
 
     <h1 class="page-title">Список складов</h1>
 
     <!-- Список складов -->
-    <div class="warehouses-wrapper" th:unless="${#lists.isEmpty(warehouses)}">
+    <div class="warehouses-wrapper" th:unless="${#lists.isEmpty(warehouseList)}">
         <button class="pagination-left" onclick="scrollWarehouses(-1)">
             <i class="fas fa-chevron-left"></i>
         </button>
         <div class="warehouses-list" id="warehousesList">
-            <div class="warehouse-card" th:each="warehouse : ${warehouses}">
-                <a th:href="@{/warehouses/{id}(id=${warehouse.id})}" class="warehouse-link">
-                    <h3 class="warehouse-name" th:text="${warehouse.name}">Название склада</h3>
-                    <div class="warehouse-details">
-                        <div class="warehouse-detail">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span th:text="${warehouse.address}">Адрес склада</span>
+            <div class="warehouse-card" th:each="warehouse : ${warehouseList}">
+                <div class="warehouse-content">
+                    <a th:href="@{/warehouse/{id}(id=${warehouse.id})}" class="warehouse-link">
+                        <h3 class="warehouse-name" th:text="${warehouse.name}">Название склада</h3>
+                        <div class="warehouse-details">
+                            <div class="warehouse-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span th:text="${warehouse.address}">Адрес склада</span>
+                            </div>
+                            <div class="warehouse-detail">
+                                <i class="fas fa-phone"></i>
+                                <span th:text="${warehouse.manager}">Ответственный</span>
+                            </div>
                         </div>
-                        <div class="warehouse-detail">
-                            <i class="fas fa-phone"></i>
-                            <span th:text="${warehouse.phone}">Телефон</span>
-                        </div>
-                        <div class="warehouse-detail">
-                            <i class="fas fa-boxes"></i>
-                            <span th:text="${warehouse.capacity} + ' единиц хранения'">Вместимость</span>
-                        </div>
+                    </a>
+                    <div class="warehouse-actions">
+                        <form th:action="@{/employee/warehouse/editPage/} + ${warehouse.id}" method="get">
+                        <button class="btn btn-outline">
+                            <i class="fas fa-edit"></i> Редактировать
+                        </button>
+                        </form>
+                        <form th:action="@{/employee/warehouse/delete/} + ${warehouse.id}" method="post">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <button  class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Удалить
+                        </button>
+                        </form>
                     </div>
-                </a>
-                <div class="warehouse-actions">
-                    <button class="btn btn-outline"
-                            th:onclick="'location.href=\'/warehouses/edit/' + ${warehouse.id} + '\''">
-                        <i class="fas fa-edit"></i> Редактировать
-                    </button>
-                    <button class="btn btn-danger"
-                            th:onclick="'confirmDelete(' + ${warehouse.id} + ')'">
-                        <i class="fas fa-trash"></i> Удалить
-                    </button>
                 </div>
             </div>
         </div>
@@ -479,9 +485,9 @@
             <i class="fas fa-chevron-right"></i>
         </button>
     </div>
+
 </div>
 
-<!-- Компактный футер -->
 <footer class="footer">
     <div class="footer-content">
         <div class="footer-links">
@@ -496,12 +502,6 @@
 </footer>
 
 <script>
-    function confirmDelete(warehouseId) {
-        if (confirm('Вы уверены, что хотите удалить этот склад?')) {
-            console.log('Удаление склада с ID:', warehouseId);
-            // window.location.href = '/warehouses/delete/' + warehouseId;
-        }
-    }
 
     function scrollWarehouses(direction) {
         const list = document.getElementById('warehousesList');
