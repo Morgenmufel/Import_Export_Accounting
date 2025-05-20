@@ -277,9 +277,9 @@
   <h1 class="page-title">Редактирование профиля</h1>
 
   <div class="profile-form">
-    <form th:action="@{/employee/profile/update}" method="post">
+    <form th:action="@{/employee/profile/edit}" method="post">
       <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-
+      <input type="hidden" name="employeeRole" th:value="${employee.role.name()}">
       <div class="form-group">
         <label for="username">Никнейм</label>
         <input type="text" id="username" name="username" class="form-control"

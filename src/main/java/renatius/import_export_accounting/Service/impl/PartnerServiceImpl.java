@@ -1,7 +1,9 @@
 package renatius.import_export_accounting.Service.impl;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import renatius.import_export_accounting.Entity.Partner;
 import renatius.import_export_accounting.Repositories.PartnerRepository;
 import renatius.import_export_accounting.Service.PartnerService;
@@ -9,7 +11,8 @@ import renatius.import_export_accounting.Service.PartnerService;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
+@Transactional(rollbackFor = Exception.class)
 public class PartnerServiceImpl implements PartnerService {
 
     private final PartnerRepository partnerRepository;

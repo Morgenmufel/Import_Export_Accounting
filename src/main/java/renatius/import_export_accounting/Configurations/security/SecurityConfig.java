@@ -29,7 +29,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         //TODO допилить все маппинги, logout
                         .requestMatchers("/employee/login", "/employee/register", "/employee/registerEmployee").permitAll()
-                        .requestMatchers("/employee/warehouse/home", "/employee/warehouse/addPage", "/employee/warehouse/add", "/employee/profile", "/employee/warehouse/**").hasAuthority("ROLE_WAREHOUSE_MANAGER")
+                        .requestMatchers("/employee/warehouse/**", "/products/**").hasAuthority("ROLE_WAREHOUSE_MANAGER")
+                        .requestMatchers("/employee/profile/**").authenticated()
                         .requestMatchers("/employee/admin").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/employee/accountant").hasAuthority("ROLE_ACCOUNTANT")
                         .requestMatchers("/employee/warehouseManager").hasAuthority("ROLE_WAREHOUSE_MANAGER")

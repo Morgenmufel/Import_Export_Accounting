@@ -285,6 +285,7 @@
     <div class="form-card">
         <form th:action="@{/employee/warehouse/edit}" method="post">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <input type="hidden" name="originalId" th:value="${warehouse.id}"/>
 
             <div class="form-group">
                 <label for="name">Название склада</label>

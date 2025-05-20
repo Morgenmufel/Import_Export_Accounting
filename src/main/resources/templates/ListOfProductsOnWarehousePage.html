@@ -467,19 +467,18 @@
     <div class="header-content">
         <div class="header-left">
             <div class="logo">Warehouse</div>
-            <a href="/warehouses" class="profile-link">
+            <a th:href="@{/employee/warehouse/home}" class="profile-link">
                 <i class="fas fa-arrow-left"></i> Назад к складам
             </a>
         </div>
         <div class="user-info">
-            <span>Администратор</span>
-            <div class="user-avatar">АС</div>
+            <span th:object="${employee}" th:text="*{username}">Администратор</span>
+            <div class="user-avatar">НС</div>
         </div>
     </div>
 </header>
 
 <main class="container">
-    <!-- Warehouse Info -->
     <div class="warehouse-info-card">
         <div class="warehouse-header">
             <h2 class="warehouse-name" th:text="${warehouse.name}">Основной склад</h2>

@@ -10,4 +10,8 @@ public interface EmployeeService {
      Employee findById(long id);
 
      void saveEmp(Employee employee);
+
+    boolean excitingByUsernameNotId(String username, Long id);
+
+    boolean excitingByEmailNotId(String email, Long id);
 }

@@ -444,7 +444,6 @@
 
     <h1 class="page-title">Список складов</h1>
 
-    <!-- Список складов -->
     <div class="warehouses-wrapper" th:unless="${#lists.isEmpty(warehouseList)}">
         <button class="pagination-left" onclick="scrollWarehouses(-1)">
             <i class="fas fa-chevron-left"></i>
@@ -452,7 +451,7 @@
         <div class="warehouses-list" id="warehousesList">
             <div class="warehouse-card" th:each="warehouse : ${warehouseList}">
                 <div class="warehouse-content">
-                    <a th:href="@{/warehouse/{id}(id=${warehouse.id})}" class="warehouse-link">
+                    <a th:href="@{/employee/warehouse/{id}(id=${warehouse.id})}" class="warehouse-link">
                         <h3 class="warehouse-name" th:text="${warehouse.name}">Название склада</h3>
                         <div class="warehouse-details">
                             <div class="warehouse-detail">

@@ -103,21 +103,55 @@ public class WarehouseManagerController {
     }
 
 
+    @GetMapping("/{id}")
+    public String oneWarehousePage(@PathVariable long id, Model model) {
+        Warehouse warehouse1 = null;
+        model.addAttribute("employee", employeeService.findByUsername(SecurityUtil.getSessionUser()).get());
+        Optional<Warehouse> warehouse = warehouseService.findWarehouseById(id);
+        if (warehouse.isPresent()){
+            warehouse1 = warehouse.get();
+        }
+        model.addAttribute("warehouse", warehouse1);
+        return "ListOfProductsOnWarehousePage";
+    }
+
     //TODO допилить изменения
     @PostMapping("/edit")
-    public String editWarehouse(@ModelAttribute("warehouse") Warehouse warehouse, BindingResult bindingResult, Model model) {
-        String warehouseName = warehouse.getName();
-        String warehouseAddress = warehouse.getAddress();
-        Optional <Warehouse> excitingWarehouseName = warehouseService.findWarehouseByName(warehouseName);
-        Optional <Warehouse> excitingWarehouseAddress = warehouseService.findWarehouseByAddress(warehouseAddress);
-        if(excitingWarehouseName.isPresent() && excitingWarehouseAddress.isPresent()) {
-            model.addAttribute("alertMessage", "Имя или адрес уже существует. Меняй");
-            model.addAttribute("warehouse", warehouse);
-            return "EditWarehousePage";
+    public String editWarehouse(@ModelAttribute("warehouse") Warehouse updatedWarehouse,
+                                BindingResult bindingResult,
+                                Model model, @RequestParam ("originalId") Long originalId) {
+
+        Warehouse existingWarehouse = warehouseService.findWarehouseById(originalId)
+                .orElseThrow(() -> new IllegalArgumentException("Склад не найден"));
+
+        if (!existingWarehouse.getName().equals(updatedWarehouse.getName())) {
+            if (warehouseService.excitingWarehouseByName(updatedWarehouse.getName(), originalId)) {
+                model.addAttribute("alertMessage", "Склад с таким названием уже существует");
+                model.addAttribute("warehouse", existingWarehouse);
+                return "EditWarehousePage";
+            }
         }
-        else{
-            warehouseService.updateWarehouse(warehouse);
-            return "redirect:/employee/warehouse/home";
+
+        if (!existingWarehouse.getAddress().equals(updatedWarehouse.getAddress())) {
+            if (warehouseService.excitingWarehouseByAddress(updatedWarehouse.getAddress(), originalId)) {
+                model.addAttribute("alertMessage", "Склад с таким адресом уже существует");
+                model.addAttribute("warehouse", existingWarehouse); // Возвращаем оригинальные данные
+                return "EditWarehousePage";
+            }
         }
+
+        if (bindingResult.hasErrors()){
+            model.addAttribute("alertMessage", "В форме возникли ошибки");
+            return "redirect:/employee/warehouse/editPage/" + originalId;
+        }
+
+
+        existingWarehouse.setName(updatedWarehouse.getName());
+        existingWarehouse.setAddress(updatedWarehouse.getAddress());
+        existingWarehouse.setManager(updatedWarehouse.getManager());
+
+        warehouseService.updateWarehouse(existingWarehouse);
+
+        return "redirect:/employee/warehouse/home";
     }
 }

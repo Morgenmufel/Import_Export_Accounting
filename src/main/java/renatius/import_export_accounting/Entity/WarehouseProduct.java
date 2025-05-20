@@ -17,7 +17,7 @@ public class WarehouseProduct {
     @EmbeddedId
     private WarehouseProductId id;
 
-    @ManyToOne @MapsId("productId")
+    @ManyToOne(fetch = FetchType.EAGER) @MapsId("productId")
     private Product product;
 
     @ManyToOne

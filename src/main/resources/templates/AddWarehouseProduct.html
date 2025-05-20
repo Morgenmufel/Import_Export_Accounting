@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Добавление товара</title>
+  <style>
+    :root {
+      --primary-color: #4a76a8;
+      --secondary-color: #f5f5f5;
+      --border-color: #ddd;
+      --text-color: #333;
+      --error-color: #d32f2f;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      color: var(--text-color);
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    h1 {
+      color: var(--primary-color);
+      margin: 0;
+    }
+
+    .back-button {
+      display: inline-block;
+      padding: 8px 15px;
+      background-color: var(--secondary-color);
+      color: var(--text-color);
+      text-decoration: none;
+      border-radius: 4px;
+      border: 1px solid var(--border-color);
+      transition: all 0.3s ease;
+    }
+
+    .back-button:hover {
+      background-color: #e0e0e0;
+    }
+
+    .product-form {
+      background: #fff;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(74, 118, 168, 0.2);
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    .btn-primary:hover {
+      background-color: #3a5f8a;
+    }
+
+    .btn-secondary {
+      background-color: var(--secondary-color);
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+
+    .btn-secondary:hover {
+      background-color: #e0e0e0;
+    }
+
+    .error-message {
+      color: var(--error-color);
+      font-size: 14px;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <h1>Добавление нового товара</h1>
+    <a href="/products" class="back-button">← Назад к списку</a>
+  </header>
+
+  <main class="content">
+    <form th:action="@{/products/add}" th:object="${product}" method="post" class="product-form">
+      <input type="hidden" name="warehouseId" th:value="${warehouseId}">
+      <div class="form-group">
+        <label for="name">Название товара *</label>
+        <input type="text" id="name" th:field="*{name}" required>
+        <small class="error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
+      </div>
+
+      <div class="form-group">
+        <label for="productCode">Код товара *</label>
+        <input type="text" id="productCode" th:field="*{productCode}" required>
+        <small class="error-message" th:if="${#fields.hasErrors('productCode')}" th:errors="*{productCode}"></small>
+      </div>
+
+      <div class="form-group">
+        <label for="originCountry">Страна происхождения</label>
+        <input type="text" id="originCountry" th:field="*{originCountry}">
+      </div>
+
+      <div class="form-group">
+        <label for="unitOfMeasure">Единица измерения</label>
+        <select id="unitOfMeasure" th:field="*{unitOfMeasure}">
+          <option value="">Выберите единицу измерения</option>
+          <option value="шт">Штуки</option>
+          <option value="кг">Килограммы</option>
+          <option value="л">Литры</option>
+          <option value="м">Метры</option>
+          <option value="м²">Квадратные метры</option>
+          <option value="м³">Кубические метры</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="basePrice">Базовая цена *</label>
+        <input type="number" step="0.01" id="basePrice" th:field="*{basePrice}" required>
+        <small class="error-message" th:if="${#fields.hasErrors('basePrice')}" th:errors="*{basePrice}"></small>
+      </div>
+
+      <div class="form-group">
+        <label for="operationType">Тип операции</label>
+        <select id="operationType" th:field="*{operationType}">
+          <option value="">Выберите тип операции</option>
+          <option th:each="type : ${T(com.example.enums.OperationType).values()}"
+                  th:value="${type}"
+                  th:text="${type}"></option>
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">Добавить товар</button>
+        <a href="/products" class="btn-secondary">Отмена</a>
+      </div>
+    </form>
+  </main>
+</div>
+</body>
+</html>
