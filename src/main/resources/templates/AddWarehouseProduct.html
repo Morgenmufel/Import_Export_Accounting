@@ -139,7 +139,7 @@
 <div class="container">
   <header class="header">
     <h1>Добавление нового товара</h1>
-    <a href="/products" class="back-button">← Назад к списку</a>
+    <a th:href="@{/employee/warehouse/} + ${warehouseId}" class="back-button">← Назад к списку</a>
   </header>
 
   <main class="content">
@@ -185,15 +185,20 @@
         <label for="operationType">Тип операции</label>
         <select id="operationType" th:field="*{operationType}">
           <option value="">Выберите тип операции</option>
-          <option th:each="type : ${T(com.example.enums.OperationType).values()}"
+          <option th:each="type : ${T(renatius.import_export_accounting.Entity.Enum.OperationType).values()}"
                   th:value="${type}"
                   th:text="${type}"></option>
         </select>
       </div>
 
+      <div class="form-group">
+        <label for="warehouseProduct">Количество *</label>
+        <input type="number" step="1" id="warehouseProduct" th:field="${warehouseProduct.quantity}" required>
+      </div>
+
       <div class="form-actions">
         <button type="submit" class="btn-primary">Добавить товар</button>
-        <a href="/products" class="btn-secondary">Отмена</a>
+        <a th:href="@{/employee/warehouse/} + ${warehouseId}" class="btn-secondary">Отмена</a>
       </div>
     </form>
   </main>

@@ -71,4 +71,10 @@ public class WarehouseServiceImpl implements WarehouseService {
         return warehouseProductRepository.findByProductIdWithWarehouse(productId);
     }
 
+    @Override
+    public List<WarehouseProduct> findWarehouseProductByWarehouseId(Long warehouseId) {
+        return warehouseProductRepository.findWarehouseProductByWarehouseId(warehouseId);
+    }
+
+
 }

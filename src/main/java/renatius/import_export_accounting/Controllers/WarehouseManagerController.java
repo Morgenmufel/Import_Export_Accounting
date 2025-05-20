@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import renatius.import_export_accounting.Configurations.security.SecurityUtil;
 import renatius.import_export_accounting.Entity.Employee;
 import renatius.import_export_accounting.Entity.Warehouse;
+import renatius.import_export_accounting.Entity.WarehouseProduct;
 import renatius.import_export_accounting.Service.EmployeeService;
 import renatius.import_export_accounting.Service.WarehouseService;
 import java.util.List;
@@ -108,14 +109,19 @@ public class WarehouseManagerController {
         Warehouse warehouse1 = null;
         model.addAttribute("employee", employeeService.findByUsername(SecurityUtil.getSessionUser()).get());
         Optional<Warehouse> warehouse = warehouseService.findWarehouseById(id);
+        List<WarehouseProduct> warehouseProductList;
         if (warehouse.isPresent()){
             warehouse1 = warehouse.get();
+        }
+        warehouseProductList = warehouseService.findWarehouseProductByWarehouseId(id);
+        if(warehouseProductList != null && warehouseProductList.size() > 0){
+            model.addAttribute("warehouseProducts", warehouseProductList);
+            model.addAttribute("warehouseId", id);
         }
         model.addAttribute("warehouse", warehouse1);
         return "ListOfProductsOnWarehousePage";
     }
 
-    //TODO допилить изменения
     @PostMapping("/edit")
     public String editWarehouse(@ModelAttribute("warehouse") Warehouse updatedWarehouse,
                                 BindingResult bindingResult,

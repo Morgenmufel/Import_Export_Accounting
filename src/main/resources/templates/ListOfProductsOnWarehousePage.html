@@ -515,9 +515,11 @@
     <div class="products-section">
         <div class="section-header">
             <h3 class="section-title">Товары на складе</h3>
-            <button class="btn btn-primary" onclick="openAddProductModal()">
+            <form th:action="@{/products/add/} + ${warehouse.id}">
+            <button class="btn btn-primary">
                 <i class="fas fa-plus"></i> Добавить товар
             </button>
+            </form>
         </div>
 
         <table class="products-table">
@@ -542,14 +544,21 @@
                 <td th:text="${#temporals.format(wp.updatedAt, 'dd.MM.yyyy HH:mm')}">12.05.2023 14:30</td>
                 <td>
                     <div class="actions">
-                        <button class="btn btn-outline btn-sm"
-                                th:onclick="'openEditProductModal(' + ${wp.id.warehouseId} + ',' + ${wp.id.productId} + ')'">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-danger btn-sm"
-                                th:onclick="'confirmDeleteProduct(' + ${wp.id.warehouseId} + ',' + ${wp.id.productId} + ')'">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <form th:action="@{'/products/edit/' + ${wp.warehouse.id} + '/' + ${wp.product.id}}">
+                            <button type="submit" class="btn btn-outline btn-sm">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </form>
+
+                        <form th:action="@{'/products/delete/'} + ${wp.product.id}"
+                              method="post"
+                              onsubmit="return confirm('Вы уверены, что хотите удалить этот товар?')">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <input type="hidden" name="warehouseId" th:value="${warehouseId}">
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
                     </div>
                 </td>
             </tr>
@@ -558,61 +567,6 @@
     </div>
 </main>
 
-<!-- Add Product Modal -->
-<div id="addProductModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3 class="modal-title">Добавить товар на склад</h3>
-            <span class="close" onclick="closeModal('addProductModal')">&times;</span>
-        </div>
-        <form th:action="@{/warehouses/{id}/products/add(id=${warehouse.id})}" method="post">
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="productId">Товар</label>
-                    <select class="form-control" id="productId" name="productId" required>
-                        <option th:each="product : ${allProducts}"
-                                th:value="${product.id}"
-                                th:text="${product.name + ' (' + product.productCode + ')'}">
-                            Ноутбук Lenovo (NB-LEN-001)
-                        </option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="quantity">Количество</label>
-                    <input type="number" class="form-control" id="quantity" name="quantity" min="1" required>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline" onclick="closeModal('addProductModal')">Отмена</button>
-                <button type="submit" class="btn btn-primary">Добавить</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- Edit Product Modal -->
-<div id="editProductModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3 class="modal-title">Редактировать товар</h3>
-            <span class="close" onclick="closeModal('editProductModal')">&times;</span>
-        </div>
-        <form th:action="@{/warehouses/{id}/products/update(id=${warehouse.id})}" method="post">
-            <input type="hidden" id="editWarehouseId" name="warehouseId">
-            <input type="hidden" id="editProductId" name="productId">
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="editQuantity">Количество</label>
-                    <input type="number" class="form-control" id="editQuantity" name="quantity" min="1" required>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline" onclick="closeModal('editProductModal')">Отмена</button>
-                <button type="submit" class="btn btn-primary">Сохранить</button>
-            </div>
-        </form>
-    </div>
-</div>
 
 <footer class="footer">
     <div class="footer-content">
@@ -625,46 +579,5 @@
     </div>
 </footer>
 
-<script>
-    function openAddProductModal() {
-        document.getElementById('addProductModal').style.display = 'flex';
-    }
-
-    function openEditProductModal(warehouseId, productId) {
-        // Здесь должна быть загрузка данных через AJAX
-        // Пример:
-        // fetch(`/api/warehouses/${warehouseId}/products/${productId}`)
-        //   .then(response => response.json())
-        //   .then(data => {
-        //       document.getElementById('editWarehouseId').value = warehouseId;
-        //       document.getElementById('editProductId').value = productId;
-        //       document.getElementById('editQuantity').value = data.quantity;
-        //       document.getElementById('editProductModal').style.display = 'flex';
-        //   });
-
-        // Для демонстрации:
-        document.getElementById('editWarehouseId').value = warehouseId;
-        document.getElementById('editProductId').value = productId;
-        document.getElementById('editQuantity').value = 10; // Пример значения
-        document.getElementById('editProductModal').style.display = 'flex';
-    }
-
-    function closeModal(modalId) {
-        document.getElementById(modalId).style.display = 'none';
-    }
-
-    function confirmDeleteProduct(warehouseId, productId) {
-        if(confirm('Вы уверены, что хотите удалить этот товар со склада?')) {
-            window.location.href = `/warehouses/${warehouseId}/products/${productId}/delete`;
-        }
-    }
-
-    // Закрытие модального окна при клике вне его
-    window.onclick = function(event) {
-        if (event.target.className === 'modal') {
-            event.target.style.display = 'none';
-        }
-    }
-</script>
 </body>
 </html>

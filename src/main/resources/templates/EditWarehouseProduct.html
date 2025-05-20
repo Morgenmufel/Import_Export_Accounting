@@ -190,18 +190,16 @@
 <div class="container">
   <header class="header">
     <h1>Редактирование товара</h1>
-    <a href="/products" class="back-button">← Назад к списку</a>
+    <a th:href="@{/employee/warehouse/} + ${warehouseId}" class="back-button">← Назад к списку</a>
   </header>
 
   <main class="content">
     <form th:action="@{/products/edit}" th:object="${product}" method="post" class="product-form">
       <input type="hidden" name="warehouseId" th:value="${warehouseId}">
-      <input type="hidden" th:field="*{id}"/>
-      <input type="hidden" th:field="*{request}"/>
-
+      <input type="hidden" name="productId" th:field="*{id}"/>
       <div class="form-group">
         <label for="name">Название товара *</label>
-        <input type="text" id="name" th:field="*{name}" required>
+        <input type="text" id="name" name="name" th:value="${product.name}" required>
         <small class="error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
       </div>
 
@@ -236,19 +234,25 @@
       </div>
 
       <div class="form-group">
+        <label for="quantity">Количество *</label>
+        <input type="number" step="1" id="quantity" name="quantity"
+               th:value="${warehouseProduct.quantity}" required>
+      </div>
+
+      <div class="form-group">
         <label for="operationType">Тип операции</label>
         <select id="operationType" th:field="*{operationType}">
           <option value="">Выберите тип операции</option>
-          <option th:each="type : ${T(com.example.enums.OperationType).values()}"
+          <option th:each="type : ${T(renatius.import_export_accounting.Entity.Enum.OperationType).values()}"
                   th:value="${type}"
                   th:text="${type}"></option>
         </select>
       </div>
 
-      <div class="form-actions">
-        <button type="submit" class="btn-primary">Сохранить изменения</button>
-
-        <a href="/products" class="btn-secondary">Отмена</a>
+      <div  class="form-actions">
+          <input type="hidden" id="warehouseId" th:value="${warehouseId}">
+          <button type="submit" class="btn-primary">Сохранить изменения</button>
+        <a th:href="@{/employee/warehouse/} + ${warehouseId}" class="btn-secondary">Отмена</a>
       </div>
     </form>
 

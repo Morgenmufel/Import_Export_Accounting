@@ -13,4 +13,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END " +
             "FROM Product p WHERE p.productCode = :productCode AND p.id <> :id")
     boolean existsByProductCodeAndIdNot(@Param("productCode") String productCode, @Param("id") long id);
+
+    boolean existsByNameAndIdNot(String name, long id);
+
 }

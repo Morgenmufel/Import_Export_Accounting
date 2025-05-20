@@ -26,5 +26,9 @@ public interface WarehouseService {
 
     boolean excitingWarehouseByAddress(String address, Long notId);
 
-    public List<WarehouseProduct> getProductWarehouseInfo(Long productId);
+    List<WarehouseProduct> getProductWarehouseInfo(Long productId);
+
+    List<WarehouseProduct> findWarehouseProductByWarehouseId(Long warehouseId);
+
+
 }
