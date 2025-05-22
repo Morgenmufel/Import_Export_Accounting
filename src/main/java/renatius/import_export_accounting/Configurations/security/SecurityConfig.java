@@ -30,6 +30,7 @@ public class SecurityConfig {
                         //TODO допилить все маппинги, logout
                         .requestMatchers("/employee/login", "/employee/register", "/employee/registerEmployee").permitAll()
                         .requestMatchers("/employee/warehouse/**", "/products/**").hasAuthority("ROLE_WAREHOUSE_MANAGER")
+                        .requestMatchers("/employee/ved/**").hasAuthority("ROLE_ECONOMY_MANAGER")
                         .requestMatchers("/employee/profile/**").authenticated()
                         .requestMatchers("/employee/admin").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/employee/accountant").hasAuthority("ROLE_ACCOUNTANT")
@@ -56,14 +57,14 @@ public class SecurityConfig {
                 .securityMatcher("/partner/**")
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/partner/login", "/partner/register", "/partner/registerPartner").permitAll()
-                                .requestMatchers("/partner/homePage").hasAuthority("ROLE_PARTNER")
+                                .requestMatchers("/partner/mainPage", "/partner/**").hasAuthority("ROLE_PARTNER")
                         //TODO допилить все маппинги, logout
                 )
                 .formLogin(form -> form
                         .loginPage("/partner/login")
                         .usernameParameter("email")
                         .passwordParameter("passwordHash")
-                        .defaultSuccessUrl("/partner/homePage", true)
+                        .defaultSuccessUrl("/partner/mainPage", true)
                         .loginProcessingUrl("/partner/login")
                         .failureUrl("/partner/login?error=true")
                         .permitAll()

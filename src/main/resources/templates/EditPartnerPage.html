@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title><!DOCTYPE html>
+        <html xmlns:th="http://www.thymeleaf.org" lang="ru">
+        <head>
+        <meta charset="UTF-8">
+        <title>Редактирование профиля</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #f8f9fa;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #fd7e14;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9rem;
+        }
+
+        button {
+            background-color: #fd7e14;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #e66a00;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Редактировать профиль</h2>
+    <form th:action="@{/partner/edit}" th:object="${partner}" method="post">
+        <input type="hidden" th:field="*{id}" />
+        <input type="hidden" th:field="*{passwordHash}" />
+        <input type="hidden" th:field="*{contactInfo}" />
+        <input type="hidden" th:field="*{role}" />
+        <input type="hidden" th:field="*{taxNumber}" />
+        <input type="hidden" th:field="*{country}" />
+        <label>ФИО:
+            <input type="text" th:field="*{name}" required/>
+            <div class="error"></div>
+        </label>
+
+        <label>Email:
+            <input type="email" th:field="*{email}" required/>
+            <div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+        </label>
+
+        <label>Организация:
+            <input type="text" th:field="*{nameOfCompany}" required/>
+            <div class="error" th:if="${#fields.hasErrors('nameOfCompany')}" th:errors="*{nameOfCompany}"></div>
+        </label>
+
+        <button type="submit">Сохранить</button>
+    </form>
+</div>
+</body>
+</html>
+</title>
+</head>
+<body>
+
+</body>
+</html>

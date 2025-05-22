@@ -132,30 +132,23 @@ public class ProductController {
                 return "redirect:/products/edit/" + warehouseId + "/" + product.getId();
             }
 
-            // Сохранение продукта
             Product savedProduct = productService.saveProduct(product);
 
-            // Получаем существующий WarehouseProduct
             WarehouseProduct warehouseProduct = warehouseProductService.findByProductId(savedProduct.getId());
 
             if (warehouseProduct == null) {
-                // Если записи нет - создаем новую
                 WarehouseProductId id = new WarehouseProductId(warehouseId, savedProduct.getId());
                 warehouseProduct = new WarehouseProduct();
                 warehouseProduct.setId(id);
             } else {
-                // Если запись существует - НЕ изменяем ее ID!
-                // Можно обновлять только другие поля
             }
 
-            // Обновляем остальные поля
             warehouseProduct.setProduct(savedProduct);
             warehouseProduct.setQuantity(quantity);
             warehouseProduct.setUpdatedAt(LocalDateTime.now());
             warehouseProduct.setWarehouse(warehouseService.findWarehouseById(warehouseId)
                     .orElseThrow(() -> new IllegalArgumentException("Склад не найден")));
 
-            // Сохраняем
             warehouseProductService.saveWarehouseProduct(warehouseProduct);
 
             redirectAttributes.addFlashAttribute("successMessage", "Товар успешно обновлен");

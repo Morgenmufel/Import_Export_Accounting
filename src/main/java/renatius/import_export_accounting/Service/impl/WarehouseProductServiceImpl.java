@@ -55,6 +55,6 @@ public class WarehouseProductServiceImpl implements WarehouseProductService {
 
     @Override
     public WarehouseProduct findByProductId(Long productId) {
-        return warehouseProductRepository.findByProductId(productId);
+        return warehouseProductRepository.findById(productId).get();
     }
 }

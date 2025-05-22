@@ -19,7 +19,6 @@ public class Document {
     @GeneratedValue
     private Long id;
 
-    @Lob
     @Column(columnDefinition = "BYTEA")
     private byte[] fileAsArrayOfBytes;
 

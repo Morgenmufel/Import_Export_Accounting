@@ -13,4 +13,10 @@ public interface PartnerService {
     Partner findById(long id);
 
     void savePartner(Partner partner);
+
+    boolean existsByEmail(String email);
+
+    boolean existsByName(String name);
+
+    boolean existsByNameOfCompany(String nameOfCompany);
 }

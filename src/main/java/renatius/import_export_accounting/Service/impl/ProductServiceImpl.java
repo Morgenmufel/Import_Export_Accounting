@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import renatius.import_export_accounting.Entity.Enum.OperationType;
 import renatius.import_export_accounting.Entity.Product;
 import renatius.import_export_accounting.Repositories.ProductRepository;
 import renatius.import_export_accounting.Repositories.WarehouseProductRepository;
@@ -51,6 +52,21 @@ public class ProductServiceImpl implements ProductService {
         }
 
         productRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Product> getExportProducts() {
+        return productRepository.findByOperationType(OperationType.EXPORT);
+    }
+
+    @Override
+    public List<Product> getImportProducts() {
+        return productRepository.findByOperationType(OperationType.IMPORT);
+    }
+
+    @Override
+    public Product findById(Long productId) {
+        return productRepository.findById(productId).get();
     }
 
 }

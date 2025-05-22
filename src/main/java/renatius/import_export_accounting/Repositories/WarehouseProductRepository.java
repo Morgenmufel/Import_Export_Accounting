@@ -7,7 +7,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import renatius.import_export_accounting.Entity.Product;
 import renatius.import_export_accounting.Entity.WarehouseProduct;
+
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -18,7 +21,7 @@ public interface WarehouseProductRepository extends JpaRepository<WarehouseProdu
 
     boolean existsByProductId(Long productId);
 
-    WarehouseProduct findByProductId(Long productId);
+    //WarehouseProduct findByProductId(Long productId);
 
     List<WarehouseProduct> findWarehouseProductByWarehouseId(Long warehouseId);
 
@@ -38,4 +41,15 @@ public interface WarehouseProductRepository extends JpaRepository<WarehouseProdu
     @Modifying
     @Query("DELETE FROM WarehouseProduct wp WHERE wp.id.productId = :productId")
     void deleteByProductId(@Param("productId") Long productId);
+
+    @Query("SELECT wp.product.id, SUM(wp.quantity) " +
+            "FROM WarehouseProduct wp " +
+            "WHERE wp.product IN :products " +
+            "GROUP BY wp.product.id")
+    List<Object[]> findTotalQuantitiesByProducts(@Param("products") Collection<Product> products);
+
+    @Query("SELECT wp FROM WarehouseProduct wp WHERE wp.product.id = :productId ORDER BY wp.quantity DESC")
+    List<WarehouseProduct> findByProductIdOrderByQuantityDesc(@Param("productId") Long productId);
+
+    List<WarehouseProduct> findByProductId(Long productId);
 }

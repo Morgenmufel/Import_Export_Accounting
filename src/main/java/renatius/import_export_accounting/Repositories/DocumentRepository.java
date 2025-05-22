@@ -6,4 +6,5 @@ import renatius.import_export_accounting.Entity.Document;
 
 @Repository
 public interface DocumentRepository extends JpaRepository<Document, Long> {
+
 }

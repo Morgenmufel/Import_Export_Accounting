@@ -4,8 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import renatius.import_export_accounting.Entity.Enum.OperationType;
 import renatius.import_export_accounting.Entity.Product;
-
+import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -15,5 +16,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     boolean existsByProductCodeAndIdNot(@Param("productCode") String productCode, @Param("id") long id);
 
     boolean existsByNameAndIdNot(String name, long id);
+
+    List<Product> findByOperationType(OperationType operationType);
+
+    List<Product> findAll();
+
 
 }

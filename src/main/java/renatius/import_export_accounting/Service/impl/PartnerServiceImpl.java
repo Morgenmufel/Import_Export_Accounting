@@ -31,4 +31,19 @@ public class PartnerServiceImpl implements PartnerService {
     public void savePartner(Partner partner) {
         partnerRepository.save(partner);
     }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return partnerRepository.existsByEmail(email);
+    }
+
+    @Override
+    public boolean existsByName(String name) {
+        return partnerRepository.existsByName(name);
+    }
+
+    @Override
+    public boolean existsByNameOfCompany(String nameOfCompany) {
+        return partnerRepository.existsByNameOfCompany(nameOfCompany);
+    }
 }

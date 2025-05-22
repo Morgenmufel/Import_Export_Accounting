@@ -1,1042 +1,423 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org/" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Партнерский кабинет | Торговая платформа</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Партнерский кабинет</title>
     <style>
-        :root {
-            --carbon-gray: #e0e0e0;
-            --dark-blue: #2c3e50;
-            --orange: #FF6B35;
-            --light-orange: #FF9E1B;
-            --green: #27ae60;
-            --red: #e74c3c;
-            --blue: #3498db;
-            --light-gray: #f5f5f5;
-            --white: #ffffff;
-            --text-dark: #333333;
-            --text-medium: #555555;
-            --text-light: #7f8c8d;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
         body {
-            background-color: var(--carbon-gray);
-            color: var(--text-dark);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa; /* Светлый фон */
+            color: #333;
+            padding: 20px;
             line-height: 1.6;
+            margin: 0;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-        }
-        
-        header {
-            background-color: var(--dark-blue);
-            color: var(--white);
-            padding: 20px 0;
-            margin-bottom: 30px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
-        
-        .header-content {
+
+        h1, h2, h3 {
+            color: #fd7e14; /* Оранжевый для заголовков */
+        }
+
+        h1 {
+            border-bottom: 2px solid #fd7e14;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 25px;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #dee2e6;
         }
-        
-        .logo {
-            font-size: 26px;
-            font-weight: 700;
-            font-family: 'Playfair Display', serif;
-            letter-spacing: 0.5px;
-        }
-        
+
         .user-info {
             display: flex;
             align-items: center;
             gap: 15px;
         }
-        
-        .user-avatar {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--orange), var(--light-orange));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            color: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
+
         .tabs {
             display: flex;
-            background-color: var(--white);
+            gap: 5px;
+            margin-bottom: 25px;
+            background: #e9ecef;
+            padding: 5px;
             border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            margin-bottom: 30px;
         }
-        
+
         .tab {
-            padding: 16px 25px;
-            cursor: pointer;
-            text-align: center;
-            flex: 1;
+            font-weight: bold;
+            color: #495057;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 5px;
             transition: all 0.3s ease;
-            border-bottom: 3px solid transparent;
-            font-weight: 500;
-            position: relative;
+            text-align: center;
         }
-        
+
         .tab:hover {
-            background-color: var(--light-gray);
+            background: #dee2e6;
         }
-        
+
         .tab.active {
-            border-bottom: 3px solid var(--orange);
-            font-weight: 600;
-            color: var(--orange);
+            background: #fd7e14;
+            color: #fff;
         }
-        
-        .tab-badge {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background-color: var(--orange);
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .tab-content {
+
+        .section {
             display: none;
-            background-color: var(--white);
-            padding: 30px;
+            background: #fff;
+            padding: 25px;
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            animation: fadeIn 0.5s ease;
+            box-shadow: 0 0 5px rgba(0,0,0,0.05);
+            border: 1px solid #dee2e6;
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .tab-content.active {
+
+        .section.active {
             display: block;
         }
-        
-        h2 {
-            margin-bottom: 25px;
-            color: var(--dark-blue);
-            font-family: 'Playfair Display', serif;
-            font-weight: 600;
-            font-size: 28px;
-            position: relative;
-            padding-bottom: 10px;
-        }
-        
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--orange), var(--light-orange));
-        }
-        
-        h3 {
-            font-size: 20px;
-            margin-bottom: 15px;
-            color: var(--dark-blue);
-            font-weight: 600;
-        }
-        
-        .products-container {
-            display: flex;
-            gap: 30px;
-        }
-        
-        .products-available {
-            flex: 2;
-        }
-        
-        .products-selected {
-            flex: 1;
-        }
-        
+
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
-        
-        .selected-list {
-            background-color: var(--light-gray);
-            border-radius: 8px;
-            padding: 20px;
-            max-height: 500px;
-            overflow-y: auto;
-        }
-        
+
         .product-card {
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
+            border: 1px solid #dee2e6;
             padding: 20px;
+            background: #fff;
+            border-radius: 8px;
             transition: all 0.3s ease;
-            background-color: var(--white);
-            position: relative;
-            overflow: hidden;
         }
-        
-        .product-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--orange), var(--light-orange));
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
+
         .product-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: #fd7e14;
         }
-        
-        .product-card:hover::before {
-            opacity: 1;
-        }
-        
-        .product-image {
-            height: 140px;
-            background-color: var(--light-gray);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-light);
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        
-        .product-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .product-title {
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--text-dark);
-            font-size: 16px;
-        }
-        
-        .product-description {
-            color: var(--text-medium);
-            font-size: 14px;
-            margin-bottom: 10px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        
-        .product-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .product-price {
-            color: var(--green);
-            font-weight: 600;
+
+        .product-name {
             font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #fd7e14;
         }
-        
-        .product-actions {
-            display: flex;
-            gap: 8px;
+
+        .product-price {
+            color: #6c757d;
+            margin-bottom: 15px;
         }
-        
-        .btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            font-size: 14px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 13px;
-        }
-        
-        .btn-primary {
-            background-color: var(--orange);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background-color: #e05a2b;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(255, 107, 53, 0.3);
-        }
-        
-        .btn-outline {
-            background-color: transparent;
-            border: 1px solid var(--orange);
-            color: var(--orange);
-        }
-        
-        .btn-outline:hover {
-            background-color: rgba(255, 107, 53, 0.1);
-        }
-        
-        .btn-danger {
-            background-color: var(--red);
-            color: white;
-        }
-        
-        .btn-danger:hover {
-            background-color: #c44133;
-        }
-        
-        .selected-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        
-        .selected-item:last-child {
-            border-bottom: none;
-        }
-        
-        .selected-item-info {
-            flex: 1;
-        }
-        
-        .selected-item-title {
-            font-weight: 500;
-            margin-bottom: 4px;
-        }
-        
-        .selected-item-price {
-            color: var(--green);
-            font-weight: 500;
-            font-size: 14px;
-        }
-        
-        .selected-item-actions {
-            display: flex;
-            gap: 8px;
-        }
-        
+
         .quantity-control {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 10px;
+            margin-bottom: 15px;
         }
-        
-        .quantity-btn {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background-color: var(--light-gray);
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .quantity-btn:hover {
-            background-color: #d0d0d0;
-        }
-        
-        .quantity-value {
-            min-width: 20px;
+
+        .quantity-control input {
+            width: 60px;
             text-align: center;
         }
-        
-        .summary-card {
-            background-color: var(--white);
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+
+        .add-btn {
+            background: #fd7e14;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
         }
-        
-        .summary-row {
+
+        .add-btn:hover {
+            background: #e66a00;
+        }
+
+        .basket {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+            border: 1px solid #dee2e6;
+        }
+
+        .basket-title {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
+            align-items: center;
+            margin-bottom: 15px;
         }
-        
-        .summary-total {
-            font-weight: 600;
-            font-size: 18px;
-            border-top: 1px solid #e0e0e0;
-            padding-top: 10px;
-            margin-top: 10px;
-        }
-        
-        .submit-section {
+
+        .basket-item {
             display: flex;
-            justify-content: flex-end;
-            margin-top: 20px;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #dee2e6;
         }
-        
-        /* Стили для вкладки профиля */
+
+        .basket-item:last-child {
+            border-bottom: none;
+        }
+
+        .empty-basket {
+            color: #6c757d;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .submit-btn {
+            background: #fd7e14;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .submit-btn:hover {
+            background: #e66a00;
+        }
+
+        input[type="number"] {
+            border: 1px solid #ced4da;
+            padding: 8px 12px;
+            border-radius: 5px;
+            width: 80px;
+        }
+
+        input[type="number"]:focus {
+            border-color: #fd7e14;
+            outline: none;
+        }
+
+        .logout-btn {
+            background: transparent;
+            color: #fd7e14;
+            border: 1px solid #fd7e14;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(253, 126, 20, 0.1);
+        }
+
+        .profile-link {
+            color: #6c757d;
+            transition: color 0.3s ease;
+        }
+
+        .profile-link:hover {
+            color: #fd7e14;
+            text-decoration: none;
+        }
+
+        #profile {
+            background: #fff;
+        }
+
         .profile-info {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
-            margin-bottom: 30px;
         }
-        
-        .info-group {
-            margin-bottom: 15px;
+
+        .profile-field {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 3px solid #fd7e14;
         }
-        
-        .info-label {
-            font-weight: 500;
-            margin-bottom: 5px;
+
+        .profile-field strong {
+            color: #fd7e14;
             display: block;
-            color: var(--text-light);
+            margin-bottom: 5px;
         }
-        
-        .info-value {
-            padding: 10px;
-            background-color: var(--light-gray);
-            border-radius: 3px;
-            border-left: 3px solid var(--orange);
-        }
-        
-        .requests-history {
-            margin-top: 40px;
-        }
-        
-        .requests-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        
-        .requests-table th, .requests-table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        
-        .requests-table th {
-            background-color: var(--light-gray);
-            font-weight: 600;
-            color: var(--dark-blue);
-        }
-        
-        .requests-table tr:hover {
-            background-color: #f9f9f9;
-        }
-        
-        .status-pending {
-            color: var(--light-orange);
-            font-weight: 500;
-        }
-        
-        .status-approved {
-            color: var(--green);
-            font-weight: 500;
-        }
-        
-        .status-rejected {
-            color: var(--red);
-            font-weight: 500;
-        }
-        
-        .status-completed {
-            color: var(--blue);
-            font-weight: 500;
-        }
-        
-        /* Стили для вкладки выхода */
-        .logout-message {
-            text-align: center;
-            padding: 50px 0;
-        }
-        
-        .logout-message h2 {
-            margin-bottom: 20px;
-        }
-        
-        .logout-message p {
-            color: var(--text-medium);
-            max-width: 500px;
-            margin: 0 auto 30px;
-        }
-        
+
         /* Адаптивность */
-        @media (max-width: 992px) {
-            .products-container {
-                flex-direction: column;
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: 1fr;
             }
-            
+
             .profile-info {
                 grid-template-columns: 1fr;
             }
-        }
-        
-        @media (max-width: 768px) {
+
             .tabs {
                 flex-direction: column;
             }
-            
-            .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            }
-            
-            .product-card {
-                padding: 15px;
-            }
-            
-            .product-image {
-                height: 100px;
-            }
-            
-            .requests-table {
-                display: block;
-                overflow-x: auto;
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="header-content">
-                <div class="logo">Партнерский кабинет</div>
-                <div class="user-info">
-                    <div class="user-avatar">ИП</div>
-                    <span>Иван Петров</span>
-                </div>
-            </div>
-        </header>
-        
-        <div class="tabs">
-            <div class="tab active" data-tab="export">
-                <span>Экспорт товаров</span>
-                <span class="tab-badge">3</span>
-            </div>
-            <div class="tab" data-tab="import">
-                <span>Импорт товаров</span>
-                <span class="tab-badge">5</span>
-            </div>
-            <div class="tab" data-tab="profile">Профиль</div>
-            <div class="tab" data-tab="logout">Выйти</div>
-        </div>
-        
-        <!-- Вкладка экспорта товаров -->
-        <div class="tab-content active" id="export">
-            <h2><i class="fas fa-upload"></i> Экспорт товаров</h2>
-            
-            <div class="products-container">
-                <div class="products-available">
-                    <h3>Доступные товары</h3>
-                    <div class="products-grid">
-                        <div class="product-card">
-                            <div class="product-image">
-                                <img src="https://via.placeholder.com/300x200?text=Экспорт+1" alt="Экспортный товар 1">
-                            </div>
-                            <div class="product-title">Экспортный товар 1</div>
-                            <div class="product-description">Высококачественный товар для международного рынка</div>
-                            <div class="product-footer">
-                                <div class="product-price">$120.00</div>
-                                <div class="product-actions">
-                                    <button class="btn btn-primary btn-sm">
-                                        <i class="fas fa-cart-plus"></i> Добавить
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="product-card">
-                            <div class="product-image">
-                                <img src="https://via.placeholder.com/300x200?text=Экспорт+2" alt="Экспортный товар 2">
-                            </div>
-                            <div class="product-title">Экспортный товар 2</div>
-                            <div class="product-description">Популярный товар с высоким спросом</div>
-                            <div class="product-footer">
-                                <div class="product-price">$95.50</div>
-                                <div class="product-actions">
-                                    <button class="btn btn-primary btn-sm">
-                                        <i class="fas fa-cart-plus"></i> Добавить
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="product-card">
-                            <div class="product-image">
-                                <img src="https://via.placeholder.com/300x200?text=Экспорт+3" alt="Экспортный товар 3">
-                            </div>
-                            <div class="product-title">Экспортный товар 3</div>
-                            <div class="product-description">Премиум качество для требовательных клиентов</div>
-                            <div class="product-footer">
-                                <div class="product-price">$210.00</div>
-                                <div class="product-actions">
-                                    <button class="btn btn-primary btn-sm">
-                                        <i class="fas fa-cart-plus"></i> Добавить
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="product-card">
-                            <div class="product-image">
-                                <img src="https://via.placeholder.com/300x200?text=Экспорт+4" alt="Экспортный товар 4">
-                            </div>
-                            <div class="product-title">Экспортный товар 4</div>
-                            <div class="product-description">Экологически чистый продукт</div>
-                            <div class="product-footer">
-                                <div class="product-price">$75.00</div>
-                                <div class="product-actions">
-                                    <button class="btn btn-primary btn-sm">
-                                        <i class="fas fa-cart-plus"></i> Добавить
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="products-selected">
-                    <h3>Выбранные товары</h3>
-                    <div class="selected-list">
-                        <div class="selected-item">
-                            <div class="selected-item-info">
-                                <div class="selected-item-title">Экспортный товар 1</div>
-                                <div class="selected-item-price">$120.00</div>
-                            </div>
-                            <div class="selected-item-actions">
-                                <div class="quantity-control">
-                                    <button class="quantity-btn">-</button>
-                                    <span class="quantity-value">2</span>
-                                    <button class="quantity-btn">+</button>
-                                </div>
-                                <button class="btn btn-outline btn-sm">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="selected-item">
-                            <div class="selected-item-info">
-                                <div class="selected-item-title">Экспортный товар 3</div>
-                                <div class="selected-item-price">$210.00</div>
-                            </div>
-                            <div class="selected-item-actions">
-                                <div class="quantity-control">
-                                    <button class="quantity-btn">-</button>
-                                    <span class="quantity-value">1</span>
-                                    <button class="quantity-btn">+</button>
-                                </div>
-                                <button class="btn btn-outline btn-sm">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="summary-card">
-                        <div class="summary-row">
-                            <span>Товаров:</span>
-                            <span>3 шт.</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Общий вес:</span>
-                            <span>45 кг</span>
-                        </div>
-                        <div class="summary-row summary-total">
-                            <span>Итого:</span>
-                            <span>$450.00</span>
-                        </div>
-                    </div>
-                    
-                    <div class="submit-section">
-                        <button class="btn btn-primary">
-                            <i class="fas fa-paper-plane"></i> Отправить заявку
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Вкладка импорта товаров -->
-        <div class="tab-content" id="import">
-            <h2><i class="fas fa-download"></i> Импорт товаров</h2>
-            
-            <div class="products-container">
-                <div class="products-available">
-                    <h3>Доступные товары</h3>
-                    <div class="products-grid">
-                        <div class="product-card">
-                            <div class="product-image">
-                                <img src="https://via.placeholder.com/300x200?text=Импорт+1" alt="Импортный товар 1">
-                            </div>
-                            <div class="product-title">Импортный товар 1</div>
-                            <div class="product-description">Качественный товар от европейского производителя</div>
-                            <div class="product-footer">
-                                <div class="product-price">$85.00</div>
-                                <div class="product-actions">
-                                    <button class="btn btn-primary btn-sm">
-                                        <i class="fas fa-cart-plus"></i> Добавить
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="product-card">
-                            <div class="product-image">
-                                <img src="https://via.placeholder.com/300x200?text=Импорт+2" alt="Импортный товар 2">
-                            </div>
-                            <div class="product-title">Импортный товар 2</div>
-                            <div class="product-description">Эксклюзивный товар с ограниченным тиражом</div>
-                            <div class="product-footer">
-                                <div class="product-price">$120.00</div>
-                                <div class="product-actions">
-                                    <button class="btn btn-primary btn-sm">
-                                        <i class="fas fa-cart-plus"></i> Добавить
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="product-card">
-                            <div class="product-image">
-                                <img src="https://via.placeholder.com/300x200?text=Импорт+3" alt="Импортный товар 3">
-                            </div>
-                            <div class="product-title">Импортный товар 3</div>
-                            <div class="product-description">Технологичный продукт с гарантией</div>
-                            <div class="product-footer">
-                                <div class="product-price">$65.50</div>
-                                <div class="product-actions">
-                                    <button class="btn btn-primary btn-sm">
-                                        <i class="fas fa-cart-plus"></i> Добавить
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="product-card">
-                            <div class="product-image">
-                                <img src="https://via.placeholder.com/300x200?text=Импорт+4" alt="Импортный товар 4">
-                            </div>
-                            <div class="product-title">Импортный товар 4</div>
-                            <div class="product-description">Популярный бренд, стабильный спрос</div>
-                            <div class="product-footer">
-                                <div class="product-price">$99.00</div>
-                                <div class="product-actions">
-                                    <button class="btn btn-primary btn-sm">
-                                        <i class="fas fa-cart-plus"></i> Добавить
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="products-selected">
-                    <h3>Выбранные товары</h3>
-                    <div class="selected-list">
-                        <div class="selected-item">
-                            <div class="selected-item-info">
-                                <div class="selected-item-title">Импортный товар 2</div>
-                                <div class="selected-item-price">$120.00</div>
-                            </div>
-                            <div class="selected-item-actions">
-                                <div class="quantity-control">
-                                    <button class="quantity-btn">-</button>
-                                    <span class="quantity-value">3</span>
-                                    <button class="quantity-btn">+</button>
-                                </div>
-                                <button class="btn btn-outline btn-sm">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="selected-item">
-                            <div class="selected-item-info">
-                                <div class="selected-item-title">Импортный товар 4</div>
-                                <div class="selected-item-price">$99.00</div>
-                            </div>
-                            <div class="selected-item-actions">
-                                <div class="quantity-control">
-                                    <button class="quantity-btn">-</button>
-                                    <span class="quantity-value">2</span>
-                                    <button class="quantity-btn">+</button>
-                                </div>
-                                <button class="btn btn-outline btn-sm">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="summary-card">
-                        <div class="summary-row">
-                            <span>Товаров:</span>
-                            <span>5 шт.</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Общий вес:</span>
-                            <span>72 кг</span>
-                        </div>
-                        <div class="summary-row summary-total">
-                            <span>Итого:</span>
-                            <span>$558.00</span>
-                        </div>
-                    </div>
-                    
-                    <div class="submit-section">
-                        <button class="btn btn-primary">
-                            <i class="fas fa-paper-plane"></i> Отправить заявку
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Вкладка профиля -->
-        <div class="tab-content" id="profile">
-            <h2><i class="fas fa-user-circle"></i> Профиль партнера</h2>
-            <div class="profile-info">
-                <div class="info-group">
-                    <span class="info-label">Имя:</span>
-                    <div class="info-value">Иван Петров</div>
-                </div>
-                <div class="info-group">
-                    <span class="info-label">Компания:</span>
-                    <div class="info-value">Торговый дом "Петров и Ко"</div>
-                </div>
-                <div class="info-group">
-                    <span class="info-label">Email:</span>
-                    <div class="info-value">ivan.petrov@example.com</div>
-                </div>
-                <div class="info-group">
-                    <span class="info-label">Телефон:</span>
-                    <div class="info-value">+7 (123) 456-78-90</div>
-                </div>
-                <div class="info-group">
-                    <span class="info-label">Страна:</span>
-                    <div class="info-value">Россия</div>
-                </div>
-                <div class="info-group">
-                    <span class="info-label">Город:</span>
-                    <div class="info-value">Москва</div>
-                </div>
-                <div class="info-group">
-                    <span class="info-label">Тип партнера:</span>
-                    <div class="info-value">Экспортер/Импортер</div>
-                </div>
-                <div class="info-group">
-                    <span class="info-label">Дата регистрации:</span>
-                    <div class="info-value">15.03.2022</div>
-                </div>
-            </div>
-            
-            <button class="btn btn-primary" style="margin-bottom: 30px;">
-                <i class="fas fa-edit"></i> Редактировать профиль
-            </button>
-            
-            <div class="requests-history">
-                <h3><i class="fas fa-history"></i> История заявок</h3>
-                <table class="requests-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Тип</th>
-                            <th>Товар</th>
-                            <th>Дата</th>
-                            <th>Статус</th>
-                            <th>Количество</th>
-                            <th>Сумма</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>#10045</td>
-                            <td>Экспорт</td>
-                            <td>Экспортный товар 3</td>
-                            <td>12.05.2023</td>
-                            <td class="status-completed">Завершено</td>
-                            <td>120</td>
-                            <td>$25,200.00</td>
-                        </tr>
-                        <tr>
-                            <td>#10032</td>
-                            <td>Импорт</td>
-                            <td>Импортный товар 2</td>
-                            <td>05.05.2023</td>
-                            <td class="status-approved">Подтверждено</td>
-                            <td>85</td>
-                            <td>$10,200.00</td>
-                        </tr>
-                        <tr>
-                            <td>#10028</td>
-                            <td>Экспорт</td>
-                            <td>Экспортный товар 1</td>
-                            <td>28.04.2023</td>
-                            <td class="status-pending">В обработке</td>
-                            <td>200</td>
-                            <td>$24,000.00</td>
-                        </tr>
-                        <tr>
-                            <td>#10015</td>
-                            <td>Импорт</td>
-                            <td>Импортный товар 4</td>
-                            <td>15.04.2023</td>
-                            <td class="status-rejected">Отклонено</td>
-                            <td>50</td>
-                            <td>$4,950.00</td>
-                        </tr>
-                        <tr>
-                            <td>#10002</td>
-                            <td>Экспорт</td>
-                            <td>Экспортный товар 2</td>
-                            <td>02.04.2023</td>
-                            <td class="status-completed">Завершено</td>
-                            <td>75</td>
-                            <td>$7,162.50</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <!-- Вкладка выхода -->
-        <div class="tab-content" id="logout">
-            <div class="logout-message">
-                <h2><i class="fas fa-sign-out-alt"></i> Вы уверены, что хотите выйти?</h2>
-                <p>После выхода вам нужно будет снова войти в систему для доступа к партнерскому кабинету.</p>
-                <button class="btn btn-danger" style="margin-top: 20px; padding: 10px 25px;">
-                    <i class="fas fa-sign-out-alt"></i> Выйти
-                </button>
-            </div>
+<div class="container">
+    <div class="header">
+        <h1>Партнерский кабинет</h1>
+        <div class="user-info">
+            <span>Добро пожаловать, <strong th:text="${userFullName}">Имя пользователя</strong></span>
+            <a th:href="@{/partner/profile}" class="profile-link">Профиль</a>
+            <form th:action="@{/logout}" method="post" style="display:inline;">
+                <button type="submit" class="logout-btn">Выйти</button>
+            </form>
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Переключение вкладок
-            const tabs = document.querySelectorAll('.tab');
-            const tabContents = document.querySelectorAll('.tab-content');
-            
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tabContents.forEach(c => c.classList.remove('active'));
-                    
-                    this.classList.add('active');
-                    
-                    const tabId = this.getAttribute('data-tab');
-                    document.getElementById(tabId).classList.add('active');
-                });
+    <div class="tabs">
+        <a href="#export" class="tab active">Экспорт</a>
+        <a href="#import" class="tab">Импорт</a>
+    </div>
+
+    <!-- Экспорт -->
+    <div id="export" class="section active">
+        <h2>Экспорт товаров</h2>
+        <div class="products-grid">
+            <div th:each="product : ${exportProducts}" class="product-card">
+                <form th:action="@{/partner/export/add}" method="post">
+                    <div class="product-name" th:text="${product.name}">Название</div>
+                    <div class="product-price">Цена: <span th:text="${product.basePrice}">0</span> ₽</div>
+                    <div class="quantity-control">
+                        <label>Кол-во:</label>
+                        <input type="number" name="quantity" min="1" value="1">
+                        <input type="hidden" name="productId" th:value="${product.id}">
+                    </div>
+                    <button type="submit" class="add-btn">Добавить в корзину</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="basket">
+            <div class="basket-title">
+                <h3>Корзина экспорта</h3>
+                <form th:action="@{/partner/export/clear}" method="post" style="display:inline;">
+                    <button type="submit" style="background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">Очистить</button>
+                </form>
+            </div>
+            <div th:if="${#lists.isEmpty(selectedExportProducts)}" class="empty-basket">Корзина пуста</div>
+            <div th:each="entry : ${selectedExportProducts}" class="basket-item">
+                <span th:text="${entry.key.name}"></span>
+                <span th:text="${entry.value} + ' шт.'">0 шт.</span>
+            </div>
+            <form th:action="@{/partner/request/export}" method="post" th:unless="${#lists.isEmpty(selectedExportProducts)}">
+                <div th:each="entry : ${selectedExportProducts}">
+                    <input type="hidden" name="productIds" th:value="${entry.key.id}" />
+                    <input type="hidden" name="quantities" th:value="${entry.value}" />
+                </div>
+                <button type="submit" class="submit-btn">Отправить заявку на экспорт</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Импорт -->
+    <div id="import" class="section">
+        <h2>Импорт товаров</h2>
+        <div class="products-grid">
+            <div th:each="product : ${importProducts}" class="product-card">
+                <form th:action="@{/partner/import/add}" method="post">
+                    <div class="product-name" th:text="${product.name}">Название</div>
+                    <div class="product-price">Цена: <span th:text="${product.basePrice}">0</span> ₽</div>
+                    <div class="quantity-control">
+                        <label>Кол-во:</label>
+                        <input type="number" name="quantity" min="1" value="1">
+                        <input type="hidden" name="productId" th:value="${product.id}">
+                    </div>
+                    <button type="submit" class="add-btn">Добавить в корзину</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Корзина импорта (теперь внутри блока import) -->
+        <div class="basket">
+            <div class="basket-title">
+                <h3>Корзина импорта</h3>
+                <form th:action="@{/partner/import/clear}" method="post" style="display:inline;">
+                    <button type="submit" style="background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">Очистить</button>
+                </form>
+            </div>
+            <div th:if="${#lists.isEmpty(selectedImportProducts)}" class="empty-basket">Корзина пуста</div>
+            <div th:each="entry : ${selectedImportProducts}" class="basket-item">
+                <span th:text="${entry.key.name}"></span>
+                <span th:text="${entry.value} + ' шт.'">0 шт.</span>
+            </div>
+
+            <form th:action="@{/partner/request/import}" method="post" th:unless="${#lists.isEmpty(selectedImportProducts)}">
+                <div th:each="entry : ${selectedImportProducts}">
+                    <input type="hidden" name="productIds" th:value="${entry.key.id}" />
+                    <input type="hidden" name="quantities" th:value="${entry.value}" />
+                </div>
+                <button type="submit" class="submit-btn">Отправить заявку на импорт</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+    <!-- Профиль -->
+    <div id="profile" class="section">
+        <h2>Профиль</h2>
+        <div class="profile-info">
+            <div class="profile-field">
+                <strong>Email:</strong>
+                <span th:text="${userEmail}"></span>
+            </div>
+            <div class="profile-field">
+                <strong>Роль:</strong>
+                <span th:text="${userRole}"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Вкладочная навигация
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', e => {
+            e.preventDefault();
+            const targetId = tab.getAttribute('href').substring(1);
+
+            // Обновляем активные вкладки
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            // Показываем соответствующую секцию
+            document.querySelectorAll('.section').forEach(sec => {
+                sec.classList.remove('active');
             });
-            
-            // Логика для кнопок добавления товаров (упрощенная демонстрация)
-            const addButtons = document.querySelectorAll('.product-actions .btn-primary');
-            addButtons.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const productCard = this.closest('.product-card');
-                    const productTitle = productCard.querySelector('.product-title').textContent;
-                    const productPrice = productCard.querySelector('.product-price').textContent;
-                    
-                    // В реальном приложении здесь была бы логика добавления товара в список выбранных
-                    alert(`Товар "${productTitle}" добавлен в список выбранных`);
-                });
-            });
-            
-            // Логика для кнопок удаления товаров
-            const removeButtons = document.querySelectorAll('.selected-item-actions .btn-outline');
-            removeButtons.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const selectedItem = this.closest('.selected-item');
-                    selectedItem.style.animation = 'fadeOut 0.3s ease';
-                    setTimeout(() => {
-                        selectedItem.remove();
-                    }, 300);
-                });
-            });
-            
-            // Логика для кнопки выхода
-            const logoutBtn = document.querySelector('.btn-danger');
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', function() {
-                    alert('Вы успешно вышли из системы. Перенаправляем на главную страницу...');
-                    // В реальном приложении здесь было бы перенаправление
-                    // window.location.href = '/login';
-                });
-            }
-            
-            // Логика для кнопок изменения количества
-            const quantityMinusBtns = document.querySelectorAll('.quantity-btn:first-child');
-            const quantityPlusBtns = document.querySelectorAll('.quantity-btn:last-child');
-            
-            quantityMinusBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const quantityValue = this.nextElementSibling;
-                    let value = parseInt(quantityValue.textContent);
-                    if (value > 1) {
-                        value--;
-                        quantityValue.textContent = value;
-                    }
-                });
-            });
-            
-            quantityPlusBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const quantityValue = this.previousElementSibling;
-                    let value = parseInt(quantityValue.textContent);
-                    value++;
-                    quantityValue.textContent = value;
-                });
-            });
+            document.getElementById(targetId).classList.add('active');
         });
-    </script>
+    });
+</script>
 </body>
 </html>

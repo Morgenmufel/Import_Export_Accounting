@@ -13,7 +13,6 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
 public class Product {
 
     @Id
@@ -23,6 +22,8 @@ public class Product {
     private String name;
 
     private String productCode;
+
+    private String URLPhoto;
 
     private String originCountry;
 
@@ -37,4 +38,16 @@ public class Product {
     @JoinColumn(name = "request_id")
     private Request request;
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Product)) return false;
+        return id != null && id.equals(((Product) o).id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }
